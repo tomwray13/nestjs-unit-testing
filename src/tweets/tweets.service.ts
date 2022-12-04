@@ -33,7 +33,7 @@ export class TweetsService {
     if (!tweetToDelete) {
       throw new Error(`This Tweet does not exist`);
     }
-    const deletedTweet = this.tweets.splice(id, 1);
-    return deletedTweet;
+    this.tweets.splice(id, 1);
+    return tweetToDelete;
   }
 }
