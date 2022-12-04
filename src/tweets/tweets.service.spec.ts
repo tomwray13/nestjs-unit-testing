@@ -41,4 +41,66 @@ describe('TweetsService', () => {
       expect(tweet).toThrowError();
     });
   });
+
+  describe('updateTweet', () => {
+    it('should update and return tweet', () => {
+      service.tweets = ['hello world'];
+      const id = 0;
+
+      const tweet = service.updateTweet('goodbye world', id);
+
+      expect(tweet).toBe('goodbye world');
+      expect(service.tweets[id]).toBe('goodbye world');
+    });
+
+    it('show throw an error for tweets that exceed 100 characters', () => {
+      service.tweets = ['hello world'];
+      const payload =
+        'tweet that is over 100 characters in length tweet that is over 100 characters in length tweet that is over 100 characters in length tweet that is over 100 characters in length ';
+
+      const tweet = () => service.updateTweet(payload, 0);
+
+      expect(tweet).toThrowError();
+    });
+
+    it('show throw an error if the tweet does not exist', () => {
+      service.tweets = ['hello world'];
+
+      const tweet = () => service.updateTweet('goodbye world', 1);
+
+      expect(tweet).toThrowError();
+    });
+  });
+
+  describe('getTweets', () => {
+    it('should return back all tweets', () => {
+      service.tweets = ['hello world', 'this is a tweet', 'another tweet'];
+
+      const tweets = service.getTweets();
+
+      tweets.forEach((tweet) => expect(typeof tweet).toBe('string'));
+      expect(tweets).toHaveLength(3);
+    });
+  });
+
+  describe('deleteTweet', () => {
+    it('should delete and return tweet', () => {
+      service.tweets = ['hello world'];
+      const id = 0;
+
+      const tweet = service.deleteTweet(id);
+
+      expect(tweet).toBe('hello world');
+      expect(service.tweets[id]).toBe(undefined);
+      expect(service.tweets).toHaveLength(0);
+    });
+
+    it('show throw an error if the tweet does not exist', () => {
+      service.tweets = ['hello world'];
+
+      const tweet = () => service.deleteTweet(1);
+
+      expect(tweet).toThrowError();
+    });
+  });
 });
